@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>投資損益 App</title>
+
+<link rel="manifest" href="manifest.json">
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #0f172a;
+  color: white;
+}
+
+.container {
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card {
+  background: #1e293b;
+  border-radius: 16px;
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+label {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+input {
+  width: 100%;
+  margin-top: 6px;
+  margin-bottom: 14px;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #0f172a;
+  color: white;
+  font-size: 16px;
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  background: #3b82f6;
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.result-card {
+  text-align: center;
+  padding: 24px;
+}
+
+.result-number {
+  font-size: 36px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.result-rate {
+  font-size: 16px;
+}
+
+.profit {
+  color: #22c55e;
+}
+
+.loss {
+  color: #ef4444;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="title">📊 投資損益</div>
+
+  <div class="card">
+    <label>總投入</label>
+    <input id="cost" type="number" placeholder="100000">
+
+    <label>目前股價</label>
+    <input id="price" type="number" placeholder="50">
+
+    <label>持股數</label>
+    <input id="shares" type="number" placeholder="1000">
+
+    <label>已收回（賣出+股利）</label>
+    <input id="cashback" type="number" placeholder="5000">
+
+    <button onclick="calc()">立即計算</button>
+  </div>
+
+  <div class="card result-card" id="resultBox">
+    <div>目前狀態</div>
+    <div id="resultText" class="result-number">--</div>
+    <div id="resultRate" class="result-rate"></div>
+  </div>
+
+</div>
+
+<script>
+function calc() {
+  const cost = +document.getElementById('cost').value || 0;
+  const price = +document.getElementById('price').value || 0;
+  const shares = +document.getElementById('shares').value || 0;
+  const cashback = +document.getElementById('cashback').value || 0;
+
+  const value = price * shares;
+  const profit = value + cashback - cost;
+  const rate = cost ? (profit / cost * 100).toFixed(2) : 0;
+
+  const text = document.getElementById('resultText');
+  const rateText = document.getElementById('resultRate');
+
+  if (profit >= 0) {
+    text.className = "result-number profit";
+    text.innerHTML = `+${profit.toLocaleString()}`;
+    rateText.innerHTML = `+${rate}%`;
+  } else {
+    text.className = "result-number loss";
+    text.innerHTML = `${profit.toLocaleString()}`;
+    rateText.innerHTML = `${rate}%`;
+  }
+}
+</script>
+
+</body>
+</html>
